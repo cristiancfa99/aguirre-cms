@@ -15,8 +15,8 @@ export const authConfig: NextAuthConfig = {
       if (isAdmin) return loggedIn;
       return true;
     },
-    jwt({ token, user }) { if (user) (token as Record<string, unknown>).role = (user as Record<string, unknown>).role; return token; },
-    session({ session, token }) { if (session.user) (session.user as Record<string, unknown>).role = (token as Record<string, unknown>).role; return session; }
+    jwt({ token, user }) { if (user) (token as any).role = (user as any).role; return token; },
+    session({ session, token }) { if (session.user) (session.user as any).role = (token as any).role; return session; }
   },
   providers: []
 };
