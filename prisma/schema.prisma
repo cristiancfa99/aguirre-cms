@@ -1,0 +1,159 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum Role {
+  ADMIN
+  EDITOR
+}
+
+enum ProjectStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+enum MediaType {
+  IMAGE
+  VIDEO
+}
+
+enum InquiryStatus {
+  PENDIENTE
+  CONTACTADO
+  PRESUPUESTADO
+  APROBADO
+  FINALIZADO
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  name         String?
+  passwordHash String
+  role         Role     @default(ADMIN)
+  createdAt    DateTime @default(now())
+}
+
+model Category {
+  id       String    @id @default(cuid())
+  name     String
+  slug     String    @unique
+  parentId String?
+  parent   Category? @relation("CatTree", fields: [parentId], references: [id])
+  children Category[] @relation("CatTree")
+  projects Project[]
+}
+
+model Project {
+  id              String        @id @default(cuid())
+  slug            String        @unique
+  title           String
+  description     String        @default("")
+  categoryId      String?
+  category        Category?     @relation(fields: [categoryId], references: [id])
+  subcategory     String?
+  location        String        @default("Formosa")
+  client          String?
+  date            DateTime?
+  status          ProjectStatus @default(PUBLISHED)
+  featured        Boolean       @default(false)
+  order           Int           @default(0)
+  // SEO
+  metaTitle       String?
+  metaDescription String?
+  keywords        String[]      @default([])
+  // Detalle técnico
+  tags            String[]      @default([])
+  materials       String[]      @default([])
+  motorBrand      String?
+  notes           String?
+  cardLabel       String?
+  span            String        @default("s-reg")
+  thumbnail       String?
+  media           Media[]
+  inquiries       Inquiry[]
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+}
+
+model Media {
+  id        String    @id @default(cuid())
+  type      MediaType @default(IMAGE)
+  url       String
+  thumbUrl  String?
+  poster    String?
+  blurData  String?
+  alt       String    @default("")
+  width     Int?
+  height    Int?
+  order     Int       @default(0)
+  projectId String?
+  project   Project?  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  productId String?
+  product   Product?  @relation(fields: [productId], references: [id], onDelete: Cascade)
+}
+
+model Product {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  name        String
+  description String   @default("")
+  category    String   @default("Motores")
+  brand       String?
+  specs       Json?
+  price       Float?
+  badge       String?
+  thumbnail   String?
+  docsUrl     String?
+  iconKey     String?
+  published   Boolean  @default(true)
+  order       Int      @default(0)
+  media       Media[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Testimonial {
+  id           String   @id @default(cuid())
+  client       String
+  neighborhood String?
+  work         String?
+  photoUrl     String?
+  rating       Int      @default(5)
+  message      String   @default("")
+  date         DateTime @default(now())
+  published    Boolean  @default(true)
+}
+
+model Inquiry {
+  id        String        @id @default(cuid())
+  name      String?
+  phone     String?
+  email     String?
+  message   String?
+  source    String        @default("formulario") // formulario | referencia
+  projectId String?
+  project   Project?      @relation(fields: [projectId], references: [id])
+  status    InquiryStatus @default(PENDIENTE)
+  createdAt DateTime      @default(now())
+}
+
+model Post {
+  id          String    @id @default(cuid())
+  slug        String    @unique
+  title       String
+  excerpt     String    @default("")
+  cover       String?
+  body        String    @default("")
+  tags        String[]  @default([])
+  published   Boolean   @default(false)
+  publishedAt DateTime?
+  createdAt   DateTime  @default(now())
+}
