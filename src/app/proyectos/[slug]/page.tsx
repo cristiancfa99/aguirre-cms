@@ -5,9 +5,9 @@ import Footer from "@/components/Footer";
 import WaFloat from "@/components/WaFloat";
 import ReferenceButton from "@/components/ReferenceButton";
 import { getProjectBySlug } from "@/lib/queries";
-import { SITE } from "@/lib/whatsapp";
+import { SITE, waLink } from "@/lib/whatsapp";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 300;
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
@@ -69,7 +69,24 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
               {p.motorBrand && <>Motor: {p.motorBrand}.</>}
             </p>
           )}
-          <div style={{ marginTop: 30, maxWidth: 360 }}>
+          {p.products.length > 0 && (
+            <div style={{ marginTop: 40 }}>
+              <h2 style={{ fontSize: "1.3rem", marginBottom: 16 }}>Productos utilizados en este trabajo</h2>
+              <div className="used-prods">
+                {p.products.map(pr => (
+                  <a key={pr.id} className="used-prod" href={waLink(`Hola. Vi el proyecto "${p.title}" y quiero consultar por ${pr.name}. ¿Precio y disponibilidad?`)} target="_blank" rel="noopener">
+                    {pr.thumbnail && <img src={pr.thumbnail} alt={pr.name} loading="lazy" />}
+                    <div>
+                      <span className="up-name">{pr.name}</span>
+                      {pr.brand && <span className="up-brand">{pr.brand}</span>}
+                      <span className="up-cta">Consultar por WhatsApp →</span>
+                    </div>
+                  </a>
+                ))}
+              </div>
+            </div>
+          )}
+          <div style={{ marginTop: 40, maxWidth: 360 }}>
             <ReferenceButton id={p.id} title={p.title} slug={p.slug} />
           </div>
         </div>

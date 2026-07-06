@@ -79,6 +79,7 @@ model Project {
   thumbnail       String?
   media           Media[]
   inquiries       Inquiry[]
+  products        Product[]     @relation("ProjectProducts")
   createdAt       DateTime      @default(now())
   updatedAt       DateTime      @updatedAt
 }
@@ -116,6 +117,7 @@ model Product {
   published   Boolean  @default(true)
   order       Int      @default(0)
   media       Media[]
+  projects    Project[] @relation("ProjectProducts")
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }

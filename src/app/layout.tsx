@@ -16,10 +16,33 @@ export const metadata: Metadata = {
   icons: { icon: "/assets/img/favicon.png", apple: "/assets/img/apple-touch-icon.png" }
 };
 
+const localBusiness = {
+  "@context": "https://schema.org",
+  "@type": "HomeAndConstructionBusiness",
+  name: "Aguirre Automatizaciones",
+  description: "Herrería, automatización de portones, frentes modernos y estructuras metálicas en Formosa.",
+  image: `${SITE}/assets/img/hero-poster.webp`,
+  url: SITE,
+  telephone: "+543704014443",
+  priceRange: "$$",
+  areaServed: { "@type": "City", name: "Formosa" },
+  address: { "@type": "PostalAddress", addressLocality: "Formosa", addressRegion: "Formosa", addressCountry: "AR" },
+  sameAs: ["https://instagram.com/herreriaaguirre"],
+  openingHoursSpecification: [{
+    "@type": "OpeningHoursSpecification",
+    dayOfWeek: ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
+    opens: "08:00", closes: "18:00"
+  }]
+};
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="es-AR">
-      <body className={inter.className}>{children}<Reveals /></body>
+      <body className={inter.className}>
+        {children}
+        <Reveals />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusiness) }} />
+      </body>
     </html>
   );
 }

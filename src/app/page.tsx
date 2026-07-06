@@ -9,7 +9,8 @@ import { Servicios, Proceso, Nosotros, Testimonios, Contacto } from "@/component
 import { getFeaturedItems, getProducts, getTestimonials } from "@/lib/queries";
 import { waLink } from "@/lib/whatsapp";
 
-export const dynamic = "force-dynamic";
+// ISR: HTML cacheado y veloz; se regenera al editar en el panel (revalidatePath) o cada 5 min.
+export const revalidate = 300;
 
 const STRIP = ["Portones automáticos","Frentes modernos","Rejas a medida","Estructuras metálicas","Motorización PPA & SEG","Parrillas corredizas","Cerramientos"];
 

@@ -5,7 +5,7 @@ import WaFloat from "@/components/WaFloat";
 import Gallery from "@/components/Gallery";
 import { getAllItems } from "@/lib/queries";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 300;
 export const metadata: Metadata = {
   title: "Proyectos — Portfolio en Formosa",
   description: "Portfolio de portones automáticos, frentes modernos, rejas, postigones, montacargas y estructuras metálicas fabricados e instalados en Formosa.",

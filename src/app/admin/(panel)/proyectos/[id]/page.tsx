@@ -5,9 +5,12 @@ export const dynamic = "force-dynamic";
 export default async function ProjectForm({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const isNew = id === "new";
-  const p = isNew ? null : await prisma.project.findUnique({ where: { id } });
+  const p = isNew ? null : await prisma.project.findUnique({ where: { id }, include: { products: { select: { id: true } } } });
+  const linked = new Set((p?.products || []).map(pr => pr.id));
   let cats: { id: string; name: string }[] = [];
+  let prods: { id: string; name: string }[] = [];
   try { cats = await prisma.category.findMany({ orderBy: { name: "asc" }, select: { id: true, name: true } }); } catch {}
+  try { prods = await prisma.product.findMany({ orderBy: { name: "asc" }, select: { id: true, name: true } }); } catch {}
   return (
     <>
       <h1 className="admin-h1">{isNew ? "Nuevo proyecto" : "Editar proyecto"}</h1>
@@ -42,6 +45,17 @@ export default async function ProjectForm({ params }: { params: Promise<{ id: st
         <label>Etiquetas (separadas por coma)<input name="tags" defaultValue={(p?.tags || []).join(", ")} /></label>
         <label>Materiales (coma)<input name="materials" defaultValue={(p?.materials || []).join(", ")} /></label>
         <label>Marca del motor<input name="motorBrand" defaultValue={p?.motorBrand || ""} /></label>
+        {prods.length > 0 && (
+          <fieldset><legend>Productos utilizados en este trabajo</legend>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 12 }}>
+              {prods.map(pr => (
+                <label key={pr.id} className="check" style={{ margin: 0 }}>
+                  <input type="checkbox" name="productIds" value={pr.id} defaultChecked={linked.has(pr.id)} /> {pr.name}
+                </label>
+              ))}
+            </div>
+          </fieldset>
+        )}
         <fieldset><legend>SEO</legend>
           <label>Meta título<input name="metaTitle" defaultValue={p?.metaTitle || ""} /></label>
           <label>Meta descripción<textarea name="metaDescription" defaultValue={p?.metaDescription || ""} /></label>

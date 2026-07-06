@@ -37,8 +37,9 @@ export async function saveProject(formData: FormData) {
     keywords: list(formData.get("keywords")),
     notes: (String(formData.get("notes") || "") || null),
   };
-  if (id) await prisma.project.update({ where: { id }, data });
-  else await prisma.project.create({ data });
+  const productIds = formData.getAll("productIds").map(String).filter(Boolean);
+  if (id) await prisma.project.update({ where: { id }, data: { ...data, products: { set: productIds.map(pid => ({ id: pid })) } } });
+  else await prisma.project.create({ data: { ...data, products: { connect: productIds.map(pid => ({ id: pid })) } } });
   revalidatePath("/admin/proyectos"); revalidatePath("/proyectos"); revalidatePath("/");
   redirect("/admin/proyectos");
 }

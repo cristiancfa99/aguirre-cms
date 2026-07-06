@@ -44,7 +44,7 @@ export async function getTestimonials() {
 }
 export async function getProjectBySlug(slug: string) {
   try {
-    return await prisma.project.findUnique({ where: { slug }, include: { category: true, media: { orderBy: { order: "asc" } } } });
+    return await prisma.project.findUnique({ where: { slug }, include: { category: true, media: { orderBy: { order: "asc" } }, products: { where: { published: true }, orderBy: { order: "asc" } } } });
   } catch { return null; }
 }
 export async function countAll() {
