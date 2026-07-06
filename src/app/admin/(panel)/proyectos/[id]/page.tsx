@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { saveProject } from "@/app/actions/admin";
+import SmartImage from "@/components/SmartImage";
 export const dynamic = "force-dynamic";
 
 export default async function ProjectForm({ params }: { params: Promise<{ id: string }> }) {
@@ -41,7 +42,7 @@ export default async function ProjectForm({ params }: { params: Promise<{ id: st
           <label>Orden<input name="order" type="number" defaultValue={p?.order ?? 0} /></label>
           <label className="check"><input type="checkbox" name="featured" defaultChecked={p?.featured || false} /> Destacado (aparece en la Home)</label>
         </div>
-        <label>Miniatura / foto principal (URL)<input name="thumbnail" defaultValue={p?.thumbnail || ""} placeholder="/assets/img/... o URL de Cloudinary" /></label>
+        <SmartImage initialUrl={p?.thumbnail || ""} />
         <label>Etiquetas (separadas por coma)<input name="tags" defaultValue={(p?.tags || []).join(", ")} /></label>
         <label>Materiales (coma)<input name="materials" defaultValue={(p?.materials || []).join(", ")} /></label>
         <label>Marca del motor<input name="motorBrand" defaultValue={p?.motorBrand || ""} /></label>
