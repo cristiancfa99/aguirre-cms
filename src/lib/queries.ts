@@ -25,7 +25,8 @@ function toItem(p: ProjectWithMedia): GItem {
 export async function getFeaturedItems(): Promise<GItem[]> {
   try {
     const list = await getRawProjects();
-    return list.filter(p => p.featured).map(toItem);
+    // Home vende, no es galería: máximo 6 destacados (los mejores trabajos).
+    return list.filter(p => p.featured).map(toItem).slice(0, 6);
   } catch { return []; }
 }
 export async function getAllItems(): Promise<GItem[]> {
@@ -34,6 +35,11 @@ export async function getAllItems(): Promise<GItem[]> {
 export async function getProducts() {
   try {
     return await prisma.product.findMany({ where: { published: true }, orderBy: { order: "asc" } });
+  } catch { return []; }
+}
+export async function getTestimonials() {
+  try {
+    return await prisma.testimonial.findMany({ where: { published: true }, orderBy: { date: "desc" } });
   } catch { return []; }
 }
 export async function getProjectBySlug(slug: string) {

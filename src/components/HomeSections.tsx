@@ -48,6 +48,10 @@ export function Proceso() {
             </div>
           ))}
         </div>
+        <div className="band reveal">
+          <span>Todo empieza con un relevamiento sin cargo. Contanos qué necesitás.</span>
+          <a href="https://wa.me/543704014443?text=Hola%2C%20quiero%20coordinar%20un%20relevamiento%20sin%20cargo" target="_blank" rel="noopener" className="btn btn-primary">Empezar por el relevamiento →</a>
+        </div>
       </div>
     </section>
   );
@@ -87,6 +91,38 @@ export function Nosotros() {
           <div className="stat reveal d1"><div className="v">100<span>%</span></div><div className="l">Fabricación propia</div></div>
           <div className="stat reveal d2"><div className="v">+250</div><div className="l">Proyectos realizados</div></div>
           <div className="stat reveal d3"><div className="v">$0</div><div className="l">Costo de presupuesto</div></div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+type T = { id: string; client: string; neighborhood: string | null; work: string | null; message: string; rating: number };
+export function Testimonios({ items }: { items: T[] }) {
+  if (!items || items.length === 0) return null;
+  return (
+    <section className="pad" id="testimonios" style={{ background: "var(--surface)", borderTop: "1px solid var(--border)" }}>
+      <div className="wrap">
+        <div className="section-head reveal">
+          <span className="eyebrow">Lo que dicen</span>
+          <h2>Clientes que ya<br />confiaron en nosotros.</h2>
+          <p>Trabajos entregados en Formosa y la zona. La mejor referencia es un cliente conforme.</p>
+        </div>
+        <div className="tmn-grid">
+          {items.map((t, i) => (
+            <figure className={"tmn reveal" + (i % 3 === 1 ? " d1" : i % 3 === 2 ? " d2" : "")} key={t.id}>
+              <div className="tmn-stars" aria-label={`${t.rating} de 5`}>
+                {Array.from({ length: 5 }).map((_, k) => (
+                  <svg key={k} viewBox="0 0 24 24" className={k < t.rating ? "on" : ""}><path d="M12 2l3 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.9 21l1.2-6.8-5-4.9 6.9-1z"/></svg>
+                ))}
+              </div>
+              <blockquote>{t.message}</blockquote>
+              <figcaption>
+                <span className="tmn-name">{t.client}</span>
+                <span className="tmn-meta">{[t.work, t.neighborhood].filter(Boolean).join(" · ")}</span>
+              </figcaption>
+            </figure>
+          ))}
         </div>
       </div>
     </section>
