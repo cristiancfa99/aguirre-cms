@@ -3,7 +3,7 @@ import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import WaFloat from "@/components/WaFloat";
 import Gallery from "@/components/Gallery";
-import { getAllItems } from "@/lib/queries";
+import { getAllItems, getCategories } from "@/lib/queries";
 
 export const revalidate = 300;
 export const metadata: Metadata = {
@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 };
 
 export default async function Proyectos() {
-  const items = await getAllItems();
+  const [items, categories] = await Promise.all([getAllItems(), getCategories()]);
   return (
     <>
       <Nav home={false} />
@@ -25,7 +25,7 @@ export default async function Proyectos() {
         </div>
       </section>
       <section className="portfolio-grid">
-        <div className="wrap"><Gallery items={items} showFilters layout="all" /></div>
+        <div className="wrap"><Gallery items={items} categories={categories} showFilters layout="all" /></div>
       </section>
       <Footer />
       <WaFloat />

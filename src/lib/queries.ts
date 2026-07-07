@@ -25,8 +25,19 @@ function toItem(p: ProjectWithMedia): GItem {
 export async function getFeaturedItems(): Promise<GItem[]> {
   try {
     const list = await getRawProjects();
-    // Home vende, no es galería: máximo 6 destacados (los mejores trabajos).
-    return list.filter(p => p.featured).map(toItem).slice(0, 6);
+    const featured = list.filter(p => p.featured).map(toItem);
+    // Home vende, no es galería: 2 videos + 4 fotos (máx 6, los mejores trabajos).
+    const videos = featured.filter(i => i.video).slice(0, 2);
+    const photos = featured.filter(i => !i.video).slice(0, 4);
+    let out = [...videos, ...photos];
+    if (out.length < 6) out = [...out, ...featured.filter(i => !out.includes(i))].slice(0, 6);
+    return out.slice(0, 6);
+  } catch { return []; }
+}
+export async function getCategories(): Promise<{ slug: string; name: string }[]> {
+  try {
+    const cats = await prisma.category.findMany({ orderBy: [{ order: "asc" }, { name: "asc" }], select: { slug: true, name: true } });
+    return cats;
   } catch { return []; }
 }
 export async function getAllItems(): Promise<GItem[]> {
