@@ -36,5 +36,4 @@ export default function ProductGrid({ products }: { products: P[] }) {
         );
       })}
     </div>
-  );
-}
+ 

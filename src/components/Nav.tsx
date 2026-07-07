@@ -56,5 +56,4 @@ export default function Nav({ home = true }: { home?: boolean }) {
         <a href="https://wa.me/543704014443" target="_blank" rel="noopener" className="btn btn-primary">Solicitar presupuesto</a>
       </div>
     </>
-  );
-}
+ 

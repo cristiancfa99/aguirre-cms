@@ -39,5 +39,3 @@ export async function globalSearch(q: string): Promise<SearchResults> {
     };
   } catch {
     return { projects: [], products: [] };
-  }
-}
