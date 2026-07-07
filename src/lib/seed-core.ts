@@ -42,10 +42,10 @@ const PRODUCTS: PR[] = [
   { slug: "motor-dzrio-500", name: "Motor corredizo DZ Río 500 kg", description: "Motor eléctrico para portón corredizo de hasta 500 kg.", category: "Motores", brand: "DZ Río", badge: "Disponible", thumb: "/assets/img/prod-motor-dzrio.webp" },
   { slug: "motor-ppa-500", name: "Motor corredizo PPA reforzado 500 kg", description: "Motor corredizo eléctrico pesado y reforzado, hasta 500 kg.", category: "Motores", brand: "PPA", badge: "Disponible", thumb: "/assets/img/prod-motor-ppa.webp" },
   { slug: "motor-celtron-800", name: "Motor levadizo Celtron 800 kg", description: "Motor para portón levadizo, capacidad de hasta 800 kg.", category: "Motores", brand: "Celtron", badge: "Disponible", thumb: "/assets/img/prod-motor-celtron.webp" },
-  { slug: "camaras-seguridad", name: "Cámaras de seguridad", description: "Venta e instalación de cámaras para tu hogar o comercio.", category: "Seguridad", iconKey: "cam" },
-  { slug: "controles-remotos", name: "Controles y remotos", description: "Controles, receptores y duplicados para tu portón automatizado.", category: "Accesorios", iconKey: "remote" },
-  { slug: "fotocelulas-sensores", name: "Fotocélulas y sensores", description: "Seguridad anti-aplastamiento y detección de obstáculos.", category: "Accesorios", iconKey: "sensor" },
-  { slug: "accesorios-varios", name: "Accesorios varios", description: "Cremalleras, guías, cerraduras eléctricas y todo lo necesario.", category: "Accesorios", iconKey: "acc" },
+  { slug: "camaras-seguridad", name: "Cámaras de seguridad", description: "Venta e instalación de cámaras para tu hogar o comercio.", category: "Seguridad", iconKey: "cam", thumb: "https://images.unsplash.com/photo-1549109926-58f039549485?w=800&q=75&auto=format&fit=crop" },
+  { slug: "controles-remotos", name: "Controles y remotos", description: "Controles, receptores y duplicados para tu portón automatizado.", category: "Accesorios", iconKey: "remote", thumb: "https://images.unsplash.com/photo-1614415852388-2406572efce6?w=800&q=75&auto=format&fit=crop" },
+  { slug: "fotocelulas-sensores", name: "Fotocélulas y sensores", description: "Seguridad anti-aplastamiento y detección de obstáculos.", category: "Accesorios", iconKey: "sensor", thumb: "https://images.unsplash.com/photo-1722488359737-7a9b8a8436c7?w=800&q=75&auto=format&fit=crop" },
+  { slug: "accesorios-varios", name: "Accesorios varios", description: "Cremalleras, guías, cerraduras eléctricas y todo lo necesario.", category: "Accesorios", iconKey: "acc", thumb: "https://images.unsplash.com/photo-1613945831677-383c19ad7721?w=800&q=75&auto=format&fit=crop" },
 ];
 
 
