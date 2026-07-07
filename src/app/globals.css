@@ -453,4 +453,4 @@ footer.site{border-top:1px solid var(--border);padding:70px 0 36px;background:va
 .statusform{display:flex;gap:8px;align-items:center}
 .statusform select{background:var(--bg);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:6px}
 .statusform button{background:none;border:none;color:var(--accent);cursor:pointer;font-size:.82rem}
-@media(max-width:760px){.admin{grid-template-columns:1fr}.admin-side{position:static;height:auto}.admin-stats{grid-template-columns:1fr 1fr}.admin-table .row{grid-template-columns:1fr;gap:4px}.admin-form .gr
+@media(max-width:760px){.admin{grid-template-columns:1fr}.admin-side{position:static;height:auto}.admin-stats{grid-template-columns:1fr 1fr}.admin-table .row{grid-template-columns:1fr;gap:4px}.admin-form .grid2{grid-template-columns:1fr}}
