@@ -110,6 +110,9 @@ model Product {
   category    String   @default("Motores")
   brand       String?
   specs       Json?
+  compatibility String?
+  features    String[] @default([])
+  imageSource String?
   price       Float?
   badge       String?
   thumbnail   String?

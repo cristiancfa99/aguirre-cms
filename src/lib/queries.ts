@@ -53,6 +53,25 @@ export async function getTestimonials() {
     return await prisma.testimonial.findMany({ where: { published: true }, orderBy: { date: "desc" } });
   } catch { return []; }
 }
+export async function getProductBySlug(slug: string) {
+  try {
+    return await prisma.product.findUnique({
+      where: { slug },
+      include: { projects: { where: { status: "PUBLISHED" }, orderBy: { order: "asc" }, include: { category: true, media: true } } },
+    });
+  } catch { return null; }
+}
+export async function getRelatedProjects(projectId: string, categoryId: string | null, take = 3): Promise<GItem[]> {
+  try {
+    if (!categoryId) return [];
+    const list = await prisma.project.findMany({
+      where: { status: "PUBLISHED", categoryId, id: { not: projectId } },
+      include: { category: true, media: { orderBy: { order: "asc" } } },
+      take,
+    });
+    return list.map(toItem);
+  } catch { return []; }
+}
 export async function getProjectBySlug(slug: string) {
   try {
     return await prisma.project.findUnique({ where: { slug }, include: { category: true, media: { orderBy: { order: "asc" } }, products: { where: { published: true }, orderBy: { order: "asc" } } } });

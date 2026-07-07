@@ -65,17 +65,31 @@ export async function archiveProject(formData: FormData) {
   revalidatePath("/admin/proyectos");
 }
 
+function parseSpecs(raw: string): Record<string, string> | null {
+  const obj: Record<string, string> = {};
+  raw.split("\n").map(l => l.trim()).filter(Boolean).forEach(line => {
+    const i = line.indexOf(":");
+    if (i > 0) obj[line.slice(0, i).trim()] = line.slice(i + 1).trim();
+  });
+  return Object.keys(obj).length ? obj : null;
+}
+
 export async function saveProduct(formData: FormData) {
   await requireAuth();
   const id = (formData.get("id") as string) || "";
   const name = String(formData.get("name") || "");
   const priceRaw = String(formData.get("price") || "");
+  const projectIds = formData.getAll("projectIds").map(String).filter(Boolean);
   const data = {
     name,
     slug: slugify(String(formData.get("slug") || name)),
     description: String(formData.get("description") || ""),
     category: String(formData.get("category") || "Motores"),
     brand: (String(formData.get("brand") || "") || null),
+    compatibility: (String(formData.get("compatibility") || "") || null),
+    features: list(formData.get("features")),
+    specs: parseSpecs(String(formData.get("specs") || "")),
+    imageSource: (String(formData.get("imageSource") || "") || null),
     price: priceRaw ? Number(priceRaw) : null,
     badge: (String(formData.get("badge") || "") || null),
     thumbnail: (String(formData.get("thumbnail") || "") || null),
@@ -83,9 +97,9 @@ export async function saveProduct(formData: FormData) {
     published: formData.get("published") === "on",
     order: Number(formData.get("order") || 0),
   };
-  if (id) await prisma.product.update({ where: { id }, data });
-  else await prisma.product.create({ data });
-  revalidatePath("/admin/productos"); revalidatePath("/");
+  if (id) await prisma.product.update({ where: { id }, data: { ...data, projects: { set: projectIds.map(pid => ({ id: pid })) } } });
+  else await prisma.product.create({ data: { ...data, projects: { connect: projectIds.map(pid => ({ id: pid })) } } });
+  revalidatePath("/admin/productos"); revalidatePath("/productos"); revalidatePath("/");
   redirect("/admin/productos");
 }
 export async function deleteProduct(formData: FormData) {

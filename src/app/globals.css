@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+/* v4 portfolio pro + search */
 
 /* ===== Aguirre Automatizaciones — estilos compartidos ===== */
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
@@ -166,6 +167,9 @@ header.nav.scrolled .bar{padding:14px 28px}
 .pcard .badge{position:absolute;top:14px;right:14px;background:var(--accent);color:#000;font-size:.7rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:5px 12px;border-radius:100px}
 .pcard .pico{aspect-ratio:16/9;display:grid;place-items:center;background:var(--accent-soft)}
 .pcard .pico svg{width:42px;height:42px;stroke:var(--accent);fill:none;stroke-width:1.5}
+.pcard-link{display:block}
+.pcard .pbrand{font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:6px;display:block}
+.pcard h3 a:hover{color:var(--accent)}
 .pcard .pb{padding:22px 24px 24px;display:flex;flex-direction:column;flex:1}
 .pcard h3{font-size:1.12rem;margin-bottom:8px;letter-spacing:-.02em}
 .pcard p{color:var(--muted);font-size:.9rem;margin-bottom:18px;flex:1}
@@ -302,6 +306,54 @@ footer.site{border-top:1px solid var(--border);padding:70px 0 36px;background:va
 .filterbar .filters{margin-bottom:0}
 .filterbar .count{font-size:.82rem;color:var(--muted);white-space:nowrap}
 .portfolio-grid{padding:50px 0 110px}
+
+/* Búsqueda global */
+.search-trigger{width:40px;height:40px;border-radius:50%;border:1px solid var(--border);background:transparent;color:var(--text);display:grid;place-items:center;cursor:pointer;transition:.25s}
+.search-trigger:hover{border-color:var(--text);background:rgba(255,255,255,.04)}
+.search-overlay{position:fixed;inset:0;z-index:130;background:rgba(0,0,0,.8);backdrop-filter:blur(8px);display:flex;justify-content:center;align-items:flex-start;padding:12vh 20px 20px}
+.search-panel{width:100%;max-width:640px;background:var(--surface);border:1px solid var(--border);border-radius:18px;overflow:hidden;box-shadow:0 30px 80px -20px rgba(0,0,0,.8)}
+.search-input{display:flex;align-items:center;gap:12px;padding:18px 20px;border-bottom:1px solid var(--border);color:var(--muted)}
+.search-input input{flex:1;background:none;border:none;outline:none;color:var(--text);font-family:inherit;font-size:1.05rem}
+.search-close{background:none;border:none;color:var(--muted);font-size:1.6rem;cursor:pointer;line-height:1}
+.search-results{max-height:56vh;overflow-y:auto;padding:8px}
+.search-hint{color:var(--muted);font-size:.9rem;padding:22px}
+.search-group{padding:8px}
+.search-group h4{font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin:8px 10px}
+.search-item{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:12px 14px;border-radius:10px;transition:.2s}
+.search-item:hover{background:var(--surface-2)}
+.si-title{font-weight:600}
+.si-label{font-size:.8rem;color:var(--muted);white-space:nowrap}
+
+/* Ficha de producto */
+.prod-detail .crumbs{font-size:.82rem;color:var(--muted);margin-bottom:22px}
+.prod-detail .crumbs a:hover{color:var(--accent)}
+.prod-detail .crumbs span{color:var(--text)}
+.pd-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}
+.pd-media{border-radius:20px;overflow:hidden;border:1px solid var(--border);background:var(--surface-2)}
+.pd-media img{width:100%;aspect-ratio:1/1;object-fit:cover}
+.pd-noimg{aspect-ratio:1/1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;background:var(--accent-soft);color:var(--accent)}
+.pd-noimg span{font-size:1.6rem;font-weight:800}
+.pd-noimg small{color:var(--muted)}
+.pd-source{display:block;text-align:center;font-size:.76rem;color:var(--muted);padding:8px}
+.pd-source:hover{color:var(--accent)}
+.pd-info h1{font-size:clamp(1.9rem,4.4vw,2.9rem);margin:12px 0 16px}
+.pd-desc{color:var(--muted);font-size:1.05rem;margin-bottom:22px}
+.pd-features{list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:22px}
+.pd-features li{display:flex;align-items:center;gap:10px;font-size:.98rem}
+.pd-features svg{width:18px;height:18px;stroke:var(--accent);fill:none;stroke-width:2.4;flex:none}
+.pd-compat{color:var(--muted);font-size:.95rem;margin-bottom:24px;padding:14px 16px;background:var(--surface);border:1px solid var(--border);border-radius:12px}
+.pd-compat strong{color:var(--text)}
+.pd-cta{width:100%;justify-content:center}
+.pd-specs{margin-top:60px}
+.pd-specs h2,.pd-used h2{font-size:1.5rem;margin-bottom:20px}
+.pd-specs table{width:100%;border-collapse:collapse;border:1px solid var(--border);border-radius:14px;overflow:hidden}
+.pd-specs th,.pd-specs td{text-align:left;padding:14px 18px;border-bottom:1px solid var(--border);font-size:.95rem}
+.pd-specs th{color:var(--muted);font-weight:500;width:40%;background:var(--surface)}
+.pd-specs tr:last-child th,.pd-specs tr:last-child td{border-bottom:none}
+.pd-used{margin-top:60px}
+.pd-meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+.pd-meta span{font-size:.82rem;color:var(--muted);border:1px solid var(--border);border-radius:100px;padding:6px 14px}
+@media(max-width:860px){.pd-grid{grid-template-columns:1fr;gap:26px}}
 
 /* Productos utilizados (ficha de proyecto) */
 .used-prods{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
