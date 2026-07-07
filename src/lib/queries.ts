@@ -36,7 +36,12 @@ export async function getFeaturedItems(): Promise<GItem[]> {
 }
 export async function getCategories(): Promise<{ slug: string; name: string }[]> {
   try {
-    const cats = await prisma.category.findMany({ orderBy: [{ order: "asc" }, { name: "asc" }], select: { slug: true, name: true } });
+    // Solo categorías con al menos un proyecto publicado (oculta las vacías/obsoletas).
+    const cats = await prisma.category.findMany({
+      where: { projects: { some: { status: "PUBLISHED" } } },
+      orderBy: [{ order: "asc" }, { name: "asc" }],
+      select: { slug: true, name: true },
+    });
     return cats;
   } catch { return []; }
 }

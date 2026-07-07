@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { saveProduct } from "@/app/actions/admin";
+import SmartProduct from "@/components/SmartProduct";
 export const dynamic = "force-dynamic";
 
 type Specs = Record<string, string>;
@@ -18,6 +19,7 @@ export default async function ProductForm({ params }: { params: Promise<{ id: st
       <h1 className="admin-h1">{isNew ? "Nuevo producto" : "Editar producto"}</h1>
       <form action={saveProduct} className="admin-form">
         {!isNew && <input type="hidden" name="id" value={p?.id} />}
+        <SmartProduct />
         <label>Nombre<input name="name" defaultValue={p?.name || ""} required /></label>
         <label>Slug<input name="slug" defaultValue={p?.slug || ""} placeholder="se genera del nombre" /></label>
         <label>Descripción comercial<textarea name="description" defaultValue={p?.description || ""} /></label>

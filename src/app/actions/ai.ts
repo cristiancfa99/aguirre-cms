@@ -7,6 +7,62 @@ export type AIResult =
   | { ok: true; data: { title: string; description: string; alt: string; category: string; tags: string[]; keywords: string[]; metaTitle: string; metaDescription: string; slug: string } }
   | { ok: false; error: string };
 
+export type ProductAIResult =
+  | { ok: true; data: { description: string; features: string[]; compatibility: string; specs: Record<string, string>; category: string; keywords: string[] } }
+  | { ok: false; error: string };
+
+async function callGemini(parts: unknown[]): Promise<{ ok: true; text: string } | { ok: false; error: string }> {
+  const key = process.env.GEMINI_API_KEY;
+  if (!key) return { ok: false, error: "Falta configurar GEMINI_API_KEY en Vercel (Variables ambientales)." };
+  try {
+    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent?key=${key}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ contents: [{ parts }], generationConfig: { responseMimeType: "application/json", temperature: 0.4 } }),
+    });
+    if (!res.ok) { const t = await res.text(); return { ok: false, error: `Gemini error ${res.status}. ${t.slice(0, 160)}` }; }
+    const data = await res.json();
+    const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+    if (!text) return { ok: false, error: "Gemini no devolvió contenido." };
+    return { ok: true, text };
+  } catch { return { ok: false, error: "No se pudo contactar a Gemini." }; }
+}
+
+export async function analyzeProduct(query: string): Promise<ProductAIResult> {
+  const s = await auth();
+  if (!s?.user) return { ok: false, error: "No autorizado." };
+  if (query.trim().length < 3) return { ok: false, error: "Escribí marca y modelo (ej: PPA DZ Rio 500kg)." };
+
+  const prompt = `Sos el asistente de "Aguirre Automatizaciones" (herrería y automatización de portones en Formosa, Argentina). Un producto del catálogo es: "${query}".
+Con tu conocimiento del rubro (motores para portones PPA/SEG, cámaras, controles, accesorios), devolvé SOLO un JSON válido en español rioplatense con:
+{
+  "description": "descripción comercial de 2-3 frases, clara y vendedora",
+  "features": ["4 a 6 ventajas/características concretas y cortas"],
+  "compatibility": "para qué tipo de portón/uso sirve (peso, residencial/industrial, etc.)",
+  "specs": { "Campo": "Valor", "...": "..." },
+  "category": "una de: Motores, Cámaras, Controles, Accesorios, Seguridad",
+  "keywords": ["4-6 palabras clave SEO, incluir Formosa cuando aplique"]
+}
+Si no estás seguro de un dato técnico, poné un valor genérico razonable y NO inventes números exactos que no conozcas. No agregues texto fuera del JSON.`;
+
+  const r = await callGemini([{ text: prompt }]);
+  if (!r.ok) return { ok: false, error: r.error };
+  try {
+    const p = JSON.parse(r.text);
+    return {
+      ok: true,
+      data: {
+        description: String(p.description || ""),
+        features: Array.isArray(p.features) ? p.features.map(String) : [],
+        compatibility: String(p.compatibility || ""),
+        specs: (p.specs && typeof p.specs === "object") ? p.specs : {},
+        category: String(p.category || ""),
+        keywords: Array.isArray(p.keywords) ? p.keywords.map(String) : [],
+      },
+    };
+  } catch { return { ok: false, error: "No se pudo interpretar la respuesta de Gemini." }; }
+}
+
 export async function analyzeProjectImage(imageBase64: string, mime: string): Promise<AIResult> {
   const s = await auth();
   if (!s?.user) return { ok: false, error: "No autorizado." };
