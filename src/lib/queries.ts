@@ -53,6 +53,16 @@ export async function getProducts() {
     return await prisma.product.findMany({ where: { published: true }, orderBy: { order: "asc" } });
   } catch { return []; }
 }
+export async function getSettings() {
+  try {
+    return await prisma.settings.findUnique({ where: { id: "singleton" } });
+  } catch { return null; }
+}
+export async function getLatestProducts(take = 6) {
+  try {
+    return await prisma.product.findMany({ orderBy: { createdAt: "desc" }, take, select: { id: true, name: true, createdAt: true } });
+  } catch { return []; }
+}
 export async function getTestimonials() {
   try {
     return await prisma.testimonial.findMany({ where: { published: true }, orderBy: { date: "desc" } });

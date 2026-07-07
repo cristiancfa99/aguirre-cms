@@ -41,6 +41,20 @@ model User {
   createdAt    DateTime @default(now())
 }
 
+model Settings {
+  id                 String   @id @default("singleton")
+  phone              String   @default("3704014443")
+  whatsapp           String   @default("543704014443")
+  instagram          String   @default("herreriaaguirre")
+  address            String   @default("Formosa, Argentina")
+  hours              String   @default("Lun a Sáb · 8 a 18 h")
+  priceRange         String   @default("$$")
+  metaTitle          String   @default("")
+  metaDescription    String   @default("")
+  ga4Id              String   @default("")
+  updatedAt          DateTime @updatedAt
+}
+
 model Category {
   id       String    @id @default(cuid())
   name     String

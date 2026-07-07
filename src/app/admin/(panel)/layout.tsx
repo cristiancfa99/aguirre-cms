@@ -16,6 +16,9 @@ export default async function PanelLayout({ children }: { children: React.ReactN
           <Link href="/admin/categorias">Categorías</Link>
           <Link href="/admin/consultas">Consultas (CRM)</Link>
           <Link href="/admin/testimonios">Testimonios</Link>
+          <Link href="/admin/configuracion">Configuración</Link>
+          <Link href="/admin/seo">SEO</Link>
+          <Link href="/admin/usuarios">Usuarios</Link>
           <Link href="/admin/cuenta">Mi cuenta</Link>
         </nav>
         <form action={async () => { "use server"; await signOut({ redirectTo: "/admin/login" }); }} className="admin-signout">

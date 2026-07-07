@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Reveals from "@/components/Reveals";
+import { getSettings } from "@/lib/queries";
 
 const inter = Inter({ subsets: ["latin"], weight: ["300","400","500","600","700","800","900"], display: "swap" });
 const SITE = process.env.NEXT_PUBLIC_SITE_URL || "https://www.aguirreautomatizaciones.com.ar";
@@ -13,6 +14,7 @@ export const metadata: Metadata = {
   keywords: ["automatización de portones Formosa","herrería en Formosa","portones automáticos Formosa","frentes modernos Formosa","rejas Formosa","estructuras metálicas Formosa"],
   alternates: { canonical: "/" },
   openGraph: { type: "website", locale: "es_AR", siteName: "Aguirre Automatizaciones", images: ["/assets/img/hero-poster.webp"] },
+  twitter: { card: "summary_large_image", title: "Aguirre Automatizaciones | Portones automáticos y herrería en Formosa", description: "Diseño, fabricación e instalación de accesos automatizados y frentes modernos en Formosa.", images: ["/assets/img/hero-poster.webp"] },
   icons: { icon: "/assets/img/favicon.png", apple: "/assets/img/apple-touch-icon.png" }
 };
 
@@ -35,13 +37,21 @@ const localBusiness = {
   }]
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const settings = await getSettings();
+  const ga4 = settings?.ga4Id?.trim();
   return (
     <html lang="es-AR">
       <body className={inter.className}>
         {children}
         <Reveals />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusiness) }} />
+        {ga4 && (
+          <>
+            <script async src={`https://www.googletagmanager.com/gtag/js?id=${ga4}`}></script>
+            <script dangerouslySetInnerHTML={{ __html: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${ga4}');` }} />
+          </>
+        )}
       </body>
     </html>
   );
